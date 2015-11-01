@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>Decoder for ByteRun</title>
+    <script type="text/javascript">
+        function cls()
+        {
+            document.getElementById("dst").value = '';
+        }
+        
+        String.prototype.translate = function(from,to) {
+            var sl = this.length,
+                tl = to.length,
+                xlat = new Array(),
+                str = '';
+            if (sl<1 || tl<1) return this;
+            
+            for (i=0; i<256; xlat[i]=i, i++);
+            for (i=0; i<tl; i++) {
+                xlat[ from.charCodeAt(i) ] = to.charCodeAt(i);
+            }
+            
+            for (i=0; i<sl; i++) {
+                str += String.fromCharCode( xlat[ this.charCodeAt(i) ] );
+            }
+            return str;
+        }
+        
+        function ByteRunDecode(){
+            cls();
+            
+            //get string from src
+            var t = document.getElementById("src").value;
+            // Base64 decode the string, t
+            var decodedString = atob(t);
+            decodedString = decodedString.translate('123456aouie', 'aouie123456');
+            document.getElementById("dst").value = decodedString.substring(2);
+            document.getElementById("letters").innerHTML = document.getElementById("dst").value.length;
+        }
+        
+    </script>
+    </head>
+    <body>
+        Input ByteRun string here: 
+        <textarea id="src" style="width:100%;height:5em" cols="" rows=""></textarea>
+        <br>
+        Decoded ByteRun String:
+        <textarea id="dst" style="width:100%;height:5em" cols="" rows=""></textarea><br>
+        <input type="button" id="Decode" value="Validate" onClick="javascript:ByteRunDecode()" /><br /><br />
+        <div>
+        <span id="letters">0</span> character(s)
+        </div>
+    </body>
+</html>
